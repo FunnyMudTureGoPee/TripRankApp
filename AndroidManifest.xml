@@ -1,0 +1,27 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="app.triprank" android:versionCode="8" android:versionName="1.6">
+ <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="35"/>
+ <uses-permission android:name="android.permission.INTERNET"/>
+ <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+ <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+ <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+ <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"/>
+ <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+ <uses-permission android:name="android.permission.WAKE_LOCK"/>
+ <uses-permission android:name="android.permission.CAMERA"/>
+ <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+ <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+ <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" android:usesPermissionFlags="neverForLocation"/>
+ <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="32"/>
+ <uses-feature android:name="android.hardware.camera" android:required="false"/>
+ <application android:name=".SyncApp" android:label="旅途排排榜" android:icon="@drawable/icon" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:allowBackup="false" android:usesCleartextTraffic="true" android:supportsRtl="true">
+  <activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
+  <activity android:name=".MergeActivity" android:exported="false" android:configChanges="orientation|screenSize"/>
+  <activity android:name=".WebActivity" android:exported="false" android:configChanges="orientation|screenSize|keyboardHidden" android:windowSoftInputMode="adjustResize"/>
+  <activity android:name=".ScanActivity" android:exported="false" android:screenOrientation="portrait"/>
+  <activity android:name=".JoinActivity" android:exported="true">
+    <intent-filter><action android:name="android.intent.action.VIEW"/><category android:name="android.intent.category.DEFAULT"/><category android:name="android.intent.category.BROWSABLE"/><data android:scheme="triprank" android:host="join"/></intent-filter>
+  </activity>
+  <service android:name=".ClientService" android:exported="false" android:foregroundServiceType="connectedDevice"/>
+  <service android:name=".LedgerService" android:exported="false" android:foregroundServiceType="connectedDevice"/>
+ </application>
+</manifest>

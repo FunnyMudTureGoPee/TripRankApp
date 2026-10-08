@@ -1,0 +1,7 @@
+package app.triprank;
+import org.json.*;import java.util.*;import java.io.*;import java.nio.file.*;
+public class TestHost {
+ static class Memory implements LocalServer.Store{JSONArray catalog=new JSONArray().put(new JSONObject().put("id","default").put("name","默认工作页"));String catalogBefore;public JSONArray pages(){return new JSONArray(catalog.toString());}public void setPages(JSONArray p){catalog=new JSONArray(p.toString());}Map<String,String> m=new LinkedHashMap<>(),before;long rev=0,old;boolean ok;public long revision(){return rev;}public JSONArray all(){JSONArray a=new JSONArray();for(String s:m.values())a.put(new JSONObject(s));return a;}public JSONObject get(String id){return m.containsKey(id)?new JSONObject(m.get(id)):null;}public void put(JSONObject r){m.put(r.getString("id"),r.toString());}public void delete(String id){m.remove(id);}public void begin(){catalogBefore=catalog.toString();before=new LinkedHashMap<>(m);old=rev;ok=false;}public void success(){ok=true;}public void end(){if(!ok){catalog=new JSONArray(catalogBefore);m=before;rev=old;}}public void setRevision(long r){rev=r;}}
+
+ public static void main(String[] args)throws Exception {LocalServer server=new LocalServer(Files.readAllBytes(Paths.get(args[0])),new Memory(),18766);server.start();Files.write(Paths.get(args[1]),new JSONObject().put("code",server.code).toString().getBytes());System.out.println("Test server ready on 18766");}
+}

@@ -1,0 +1,15 @@
+/build/
+/signing/
+/local.properties
+*.apk
+*.aab
+*.p12
+*.jks
+*.keystore
+password.txt
+.env
+.env.*
+.DS_Store
+
+# Explicitly version the signed public install package used for Releases.
+!/releases/v1.6/TripRankApp-v1.6.apk

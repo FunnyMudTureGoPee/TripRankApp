@@ -1,0 +1,33 @@
+name: Publish signed APK release
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'releases/v1.6/**'
+      - '.github/workflows/publish-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: publish-triprank-v1.6
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify APK checksum
+        working-directory: releases/v1.6
+        run: sha256sum --check SHA256SUMS
+      - name: Publish prebuilt signed APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          tag=v1.6
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" --target "$GITHUB_SHA" --draft --title "旅途排排榜 1.6 · 手机协作版" --notes-file releases/v1.6/RELEASE_NOTES.md
+          fi
+          gh release upload "$tag" releases/v1.6/TripRankApp-v1.6.apk releases/v1.6/SHA256SUMS --clobber
+          gh release edit "$tag" --draft=false --latest
